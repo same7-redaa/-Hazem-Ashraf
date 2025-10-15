@@ -5,7 +5,7 @@ import { SOCIAL_LINKS, CONTACT_INFO } from '../constants';
 import { 
   Palette, Layout, Code, Grid3X3, Search, Play, Video, Move, Share, Target, Camera, Music, Calendar, Star,
   Film, Zap, Scissors, Image, Layers, PenTool, BookOpen, Cpu, Home, Activity, Building, ShoppingCart,
-  Award, TrendingUp, Users, Eye, Mail, Phone, MapPin, ExternalLink
+  Award, TrendingUp, Users, Eye, Mail, Phone, MapPin, ExternalLink, Globe, Link2
 } from 'lucide-react';
 
 // Icon mapping
@@ -45,17 +45,31 @@ const iconMap = {
   'map-pin': MapPin
 };
 
-// --- SVG ICONS ---
+// --- IMAGE-BASED ICONS ---
 const BehanceIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M8.84 10.835h-1.965V9.595h1.965c.634 0 .969.295.969.717 0 .422-.335.717-.969.717zm6.853-1.24h-1.31V8.403h1.31v1.192zM22 12c0 5.522-4.477 10-10 10S2 17.522 2 12 6.477 2 12 2s10 4.478 10 10zM9.168 13.115c.927 0 1.477-.295 1.477-1.01 0-.632-.466-.885-1.2-.885H6.78v5.115h2.683c1.021 0 1.691-.506 1.691-1.357 0-.758-.569-1.278-1.321-1.278h-.665v-1.585zm6.924.885c0 1.357-.886 2.115-2.1 2.115-1.309 0-2.136-.8-2.136-2.136V12.48c0-1.357.827-2.136 2.136-2.136 1.234 0 2.1.8 2.1 2.136v1.52zm-2.177-2.885H15.6V9.403h-1.685v1.712z"/>
-  </svg>
+  <img 
+    src="/behance-icon.png" 
+    alt="Behance" 
+    className={`object-contain transition-all duration-300 hover:scale-110 ${className || 'w-6 h-6'}`}
+    style={{ 
+      filter: 'invert(1) brightness(0.9)',
+      minWidth: '24px',
+      minHeight: '24px'
+    }}
+  />
 );
 
 const VimeoIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M22.396 7.164c-.093 2.026-1.507 4.799-4.245 8.32C15.322 19.161 12.928 21 10.824 21c-1.214 0-2.24-.112-3.08-.336-.84-.224-1.553-.56-2.139-1.008C4.017 18.208 3.724 16.8 3.724 14.944c0-1.856.467-3.488 1.401-4.896.934-1.408 2.24-2.352 3.92-2.832 1.68-.48 3.472-.72 5.376-.72 1.568 0 2.944.192 4.128.576 1.184.384 2.016.96 2.496 1.728.48.768.72 1.728.72 2.88 0 .896-.112 1.648-.336 2.256-.224.608-.56 1.072-1.008 1.392-.448.32-.992.48-1.632.48-.544 0-1.024-.128-1.44-.384-.416-.256-.736-.64-.96-1.152-.32-.768-.48-1.728-.48-2.88z"/>
-  </svg>
+  <img 
+    src="/vimeo-icon.png" 
+    alt="Vimeo" 
+    className={`object-contain transition-all duration-300 hover:scale-110 ${className || 'w-6 h-6'}`}
+    style={{ 
+      filter: 'invert(1) brightness(0.9)',
+      minWidth: '24px',
+      minHeight: '24px'
+    }}
+  />
 );
 
 const LinkedInIcon: React.FC<{ className?: string }> = ({ className }) => (
@@ -193,49 +207,52 @@ export const Footer: React.FC<FooterProps> = ({ className = '' }) => (
                 </div>
                 <div>
                     <h3 className="font-bold text-lg mb-4 flex items-center justify-center md:justify-start">
-                        <Share className="w-5 h-5 mr-2" />
-                        Connect
+                        <Globe className="w-5 h-5 mr-2 text-yellow-300" />
+                        <span className="text-yellow-300">Connect</span>
                     </h3>
-                    <div className="flex justify-center md:justify-start space-x-6">
+                    <div className="flex justify-center md:justify-start space-x-4">
                         <a 
                             href={SOCIAL_LINKS.behance} 
                             target="_blank" 
                             rel="noopener noreferrer" 
-                            className="group flex items-center space-x-2 hover:opacity-75 transition-all duration-300 transform hover:scale-105"
+                            className="group flex items-center space-x-2 hover:opacity-75 transition-all duration-300 transform hover:scale-105 hover:translate-y-[-2px]"
+                            title="View Behance Portfolio"
                         >
-                            <div className="p-2 rounded-lg bg-stone-700 group-hover:bg-amber-700 transition-colors">
-                                <BehanceIcon className="w-5 h-5 text-yellow-200" />
+                            <div className="p-3 rounded-xl bg-gradient-to-br from-stone-700 to-stone-800 group-hover:from-blue-600 group-hover:to-blue-700 transition-all duration-300 shadow-lg">
+                                <BehanceIcon className="w-6 h-6 text-yellow-200 group-hover:text-white transition-colors" />
                             </div>
-                            <span className="hidden sm:inline text-sm font-medium">Behance</span>
+                            <span className="hidden sm:inline text-sm font-medium text-stone-300 group-hover:text-yellow-300 transition-colors">Behance</span>
                         </a>
                         <a 
                             href={SOCIAL_LINKS.vimeo} 
                             target="_blank" 
                             rel="noopener noreferrer" 
-                            className="group flex items-center space-x-2 hover:opacity-75 transition-all duration-300 transform hover:scale-105"
+                            className="group flex items-center space-x-2 hover:opacity-75 transition-all duration-300 transform hover:scale-105 hover:translate-y-[-2px]"
+                            title="View Vimeo Videos"
                         >
-                            <div className="p-2 rounded-lg bg-stone-700 group-hover:bg-amber-700 transition-colors">
-                                <VimeoIcon className="w-5 h-5 text-yellow-200" />
+                            <div className="p-3 rounded-xl bg-gradient-to-br from-stone-700 to-stone-800 group-hover:from-cyan-600 group-hover:to-cyan-700 transition-all duration-300 shadow-lg">
+                                <VimeoIcon className="w-6 h-6 text-yellow-200 group-hover:text-white transition-colors" />
                             </div>
-                            <span className="hidden sm:inline text-sm font-medium">Vimeo</span>
+                            <span className="hidden sm:inline text-sm font-medium text-stone-300 group-hover:text-yellow-300 transition-colors">Vimeo</span>
                         </a>
                         <a 
                             href={SOCIAL_LINKS.linkedin} 
                             target="_blank" 
                             rel="noopener noreferrer" 
-                            className="group flex items-center space-x-2 hover:opacity-75 transition-all duration-300 transform hover:scale-105"
+                            className="group flex items-center space-x-2 hover:opacity-75 transition-all duration-300 transform hover:scale-105 hover:translate-y-[-2px]"
+                            title="Connect on LinkedIn"
                         >
-                            <div className="p-2 rounded-lg bg-stone-700 group-hover:bg-amber-700 transition-colors">
-                                <LinkedInIcon className="w-5 h-5 text-yellow-200" />
+                            <div className="p-3 rounded-xl bg-gradient-to-br from-stone-700 to-stone-800 group-hover:from-blue-800 group-hover:to-blue-900 transition-all duration-300 shadow-lg">
+                                <LinkedInIcon className="w-6 h-6 text-yellow-200 group-hover:text-white transition-colors" />
                             </div>
-                            <span className="hidden sm:inline text-sm font-medium">LinkedIn</span>
+                            <span className="hidden sm:inline text-sm font-medium text-stone-300 group-hover:text-yellow-300 transition-colors">LinkedIn</span>
                         </a>
                     </div>
                 </div>
                 <div className="md:text-right">
                     <h3 className="font-bold text-lg mb-4 flex items-center justify-center md:justify-end">
-                        <Award className="w-5 h-5 mr-2" />
-                        Hazem Ashraf Sayed
+                        <Star className="w-5 h-5 mr-2 text-yellow-300" />
+                        <span className="text-yellow-300">Hazem Ashraf Sayed</span>
                     </h3>
                     <p>&copy; {new Date().getFullYear()} All Rights Reserved.</p>
                     <p className="text-sm opacity-75">Built with React & Tailwind CSS.</p>

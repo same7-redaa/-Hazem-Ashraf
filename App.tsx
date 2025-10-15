@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Section, ProjectCard, Footer, ServiceCard, ToolBadge, StatsCard } from './components/common';
 import {
   UI_UX_PROJECTS, UI_UX_SERVICES, UI_UX_TOOLS,
@@ -9,8 +9,28 @@ import {
 
 type Page = 'uiux' | 'creative';
 
+// Performance: Preload critical images
+const preloadImages = () => {
+  if (typeof window !== 'undefined') {
+    const imageUrls = ['/hero-background.jpg', '/hero-background-mobile.jpg'];
+    imageUrls.forEach(url => {
+      const img = new Image();
+      img.src = url;
+    });
+  }
+};
+
 // --- UI/UX DESIGN PAGE ---
-const UiUxPage: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => {
+const UiUxPage: React.FC<{ onSwitch: () => void }> = React.memo(({ onSwitch }) => {
+  // Memoize expensive data to prevent re-renders
+  const memoizedProjects = useMemo(() => UI_UX_PROJECTS, []);
+  const memoizedServices = useMemo(() => UI_UX_SERVICES, []);
+  const memoizedTools = useMemo(() => UI_UX_TOOLS, []);
+  
+  const handleSwitchClick = useCallback(() => {
+    onSwitch();
+  }, [onSwitch]);
+
   return (
     <div className="text-stone-100">
       {/* Hero */}
@@ -47,7 +67,7 @@ const UiUxPage: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => {
               </div>
             </div>
             <button
-              onClick={onSwitch}
+              onClick={handleSwitchClick}
               className="bg-yellow-200 text-slate-800 font-bold py-3 px-8 rounded-full text-lg hover:bg-yellow-300 hover:text-slate-900 transition-all duration-300 transform hover:scale-105 hover:shadow-xl"
             >
               Explore Creative Side →
@@ -112,14 +132,14 @@ const UiUxPage: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => {
       {/* Projects */}
       <Section title="Featured Projects" className="bg-stone-900/60 backdrop-blur-sm rounded-3xl">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {UI_UX_PROJECTS.map(p => <ProjectCard key={p.title} project={p} className="bg-stone-900/80 text-stone-100 border border-yellow-500/30 backdrop-blur-sm rounded-2xl"/>)}
+          {memoizedProjects.map(p => <ProjectCard key={p.title} project={p} className="bg-stone-900/80 text-stone-100 border border-yellow-500/30 backdrop-blur-sm rounded-2xl"/>)}
         </div>
       </Section>
 
       {/* Services */}
       <Section title="Specialized Services" className="">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
-          {UI_UX_SERVICES.map(s => (
+          {memoizedServices.map(s => (
             <ServiceCard 
               key={s.name} 
               service={s} 
@@ -132,7 +152,7 @@ const UiUxPage: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => {
       {/* Tools */}
       <Section title="Design Toolkit" className="">
          <div className="flex flex-wrap justify-center items-center gap-4 md:gap-6">
-          {UI_UX_TOOLS.map(t => (
+          {memoizedTools.map(t => (
             <ToolBadge 
               key={t.name} 
               tool={t} 
@@ -143,11 +163,19 @@ const UiUxPage: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => {
       </Section>
     </div>
   );
-};
-
+});
 
 // --- CREATIVE MEDIA PAGE ---
-const CreativeMediaPage: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => {
+const CreativeMediaPage: React.FC<{ onSwitch: () => void }> = React.memo(({ onSwitch }) => {
+  // Memoize expensive data to prevent re-renders
+  const memoizedProjects = useMemo(() => CREATIVE_MEDIA_PROJECTS, []);
+  const memoizedServices = useMemo(() => CREATIVE_MEDIA_SERVICES, []);
+  const memoizedTools = useMemo(() => CREATIVE_MEDIA_TOOLS, []);
+  
+  const handleSwitchClick = useCallback(() => {
+    onSwitch();
+  }, [onSwitch]);
+
   return (
     <div className="text-stone-100">
       {/* Hero */}
@@ -184,7 +212,7 @@ const CreativeMediaPage: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => 
               </div>
             </div>
             <button
-              onClick={onSwitch}
+              onClick={handleSwitchClick}
               className="bg-yellow-200 text-slate-800 font-bold py-3 px-8 rounded-full text-lg hover:bg-yellow-300 hover:text-slate-900 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl"
             >
               ← Explore Design Side
@@ -234,7 +262,7 @@ const CreativeMediaPage: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => 
       {/* Campaigns */}
       <Section title="Featured Campaigns" titleClassName="text-white" className="bg-stone-900/60 backdrop-blur-sm rounded-3xl">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {CREATIVE_MEDIA_PROJECTS.map(p => <ProjectCard key={p.title} project={p} className="bg-stone-900/80 text-white backdrop-blur-sm border border-yellow-500/30 rounded-2xl" />)}
+          {memoizedProjects.map(p => <ProjectCard key={p.title} project={p} className="bg-stone-900/80 text-white backdrop-blur-sm border border-yellow-500/30 rounded-2xl" />)}
         </div>
       </Section>
 
@@ -257,7 +285,7 @@ const CreativeMediaPage: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => 
       {/* Tools */}
       <Section title="Creative Toolkit" titleClassName="text-white">
          <div className="flex flex-wrap justify-center items-center gap-4 md:gap-6">
-          {CREATIVE_MEDIA_TOOLS.map(t => (
+          {memoizedTools.map(t => (
             <ToolBadge 
               key={t.name} 
               tool={t} 
@@ -268,13 +296,18 @@ const CreativeMediaPage: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => 
       </Section>
     </div>
   );
-};
+});
 
 
 // --- APP CONTAINER ---
 const App: React.FC = () => {
   const [page, setPage] = useState<Page>('uiux');
-  const [isFading, setIsFading] = useState<boolean>(false);
+  const [isFading, setIsFading] = useState(false);
+
+  // Preload images on component mount
+  useEffect(() => {
+    preloadImages();
+  }, []);
 
   const handleSwitchPage = (newPage: Page) => {
     if (page === newPage) return;

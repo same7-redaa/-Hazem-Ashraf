@@ -6,6 +6,14 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hazem Ashraf Sayed - Portfolio</title>
+    
+    <!-- Preload critical images for faster loading -->
+    <link rel="preload" href="/hero-background.jpg" as="image" type="image/jpeg">
+    <link rel="preload" href="/hero-background-mobile.jpg" as="image" type="image/jpeg" media="(max-width: 768px)">
+    
+    <!-- Performance optimization -->
+    <meta name="theme-color" content="#4B1F2A">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
@@ -20,6 +28,51 @@
         --gold: #FFD700;
       }
       
+      /* Performance optimizations */
+      * {
+        box-sizing: border-box;
+      }
+      
+      html {
+        scroll-behavior: smooth;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      
+      body {
+        font-family: 'Inter', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: var(--maroon);
+        overflow-x: hidden;
+        -webkit-text-size-adjust: 100%;
+        -webkit-tap-highlight-color: transparent;
+      }
+      
+      /* GPU acceleration for animations */
+      .animate-slide-in-left,
+      .animate-fadeInUp,
+      .animate-float,
+      .animate-slideInRight,
+      .animate-scale-in,
+      .animate-glow {
+        will-change: transform, opacity;
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        perspective: 1000px;
+        -webkit-perspective: 1000px;
+      }
+      
+      /* Optimize background images */
+      .mobile-hero-bg,
+      .mobile-bg-fix {
+        will-change: transform;
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+      }
+      
       body {
         font-family: 'Inter', sans-serif;
         background: linear-gradient(135deg, #4B1F2A 0%, #5D2935 25%, #4B1F2A 50%, #6B3440 75%, #4B1F2A 100%);
@@ -28,66 +81,66 @@
         min-height: 100vh;
       }
       
-      /* Custom animations */
+      /* Custom animations - Optimized for performance */
       @keyframes fadeInUp {
         from {
           opacity: 0;
-          transform: translateY(30px);
+          transform: translate3d(0, 30px, 0);
         }
         to {
           opacity: 1;
-          transform: translateY(0);
+          transform: translate3d(0, 0, 0);
         }
       }
       
       @keyframes float {
         0%, 100% {
-          transform: translateY(0px) rotate(0deg);
+          transform: translate3d(0, 0, 0) rotate(0deg);
         }
         50% {
-          transform: translateY(-10px) rotate(1deg);
+          transform: translate3d(0, -10px, 0) rotate(1deg);
         }
       }
       
       @keyframes slideInRight {
         from {
           opacity: 0;
-          transform: translateX(50px) scale(0.8) rotate(5deg);
+          transform: translate3d(100px, 0, 0);
         }
         to {
           opacity: 1;
-          transform: translateX(0) scale(1) rotate(0deg);
+          transform: translate3d(0, 0, 0);
         }
       }
       
       @keyframes slideInLeft {
         from {
           opacity: 0;
-          transform: translateX(-50px);
+          transform: translate3d(-50px, 0, 0);
         }
         to {
           opacity: 1;
-          transform: translateX(0);
+          transform: translate3d(0, 0, 0);
         }
       }
       
       @keyframes scaleIn {
         from {
           opacity: 0;
-          transform: scale(0.3) rotate(-10deg);
+          transform: translate3d(0, 0, 0) scale(0.8);
         }
         to {
           opacity: 1;
-          transform: scale(1) rotate(0deg);
+          transform: translate3d(0, 0, 0) scale(1);
         }
       }
       
       @keyframes glow {
         0%, 100% {
-          box-shadow: 0 0 20px rgba(180, 134, 11, 0.3);
+          box-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
         }
         50% {
-          box-shadow: 0 0 40px rgba(180, 134, 11, 0.6), 0 0 60px rgba(255, 215, 0, 0.4);
+          box-shadow: 0 0 20px rgba(255, 215, 0, 0.6), 0 0 30px rgba(255, 215, 0, 0.4);
         }
       }
       
@@ -104,15 +157,35 @@
       }
       
       .animate-slide-in-left {
-        animation: slideInLeft 1s ease-out 0.2s both;
+        animation: slideInLeft 1s cubic-bezier(0.23, 1, 0.32, 1) 0.2s both;
       }
       
       .animate-scale-in {
-        animation: scaleIn 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s both;
+        animation: scaleIn 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s both;
       }
       
       .animate-glow {
         animation: glow 3s ease-in-out infinite alternate;
+      }
+      
+      /* Smooth transitions for all interactive elements */
+      button, .hover\\:scale-105, .hover\\:shadow-xl {
+        transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+      
+      /* Optimize scroll performance */
+      @media (prefers-reduced-motion: no-preference) {
+        html {
+          scroll-behavior: smooth;
+        }
+      }
+      
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
       }
       
       /* Mobile background optimization */
