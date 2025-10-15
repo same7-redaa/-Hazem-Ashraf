@@ -1,0 +1,174 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hazem Ashraf Sayed - Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+      
+      :root {
+        --maroon: #4B1F2A;
+        --charcoal: #36454F;
+        --soft-gold: #F4E4BC;
+        --light-beige: #F5F5DC;
+        --taupe: #B8860B;
+        --cool-gray: #6B7280;
+        --gold: #FFD700;
+      }
+      
+      body {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, #4B1F2A 0%, #5D2935 25%, #4B1F2A 50%, #6B3440 75%, #4B1F2A 100%);
+        background-attachment: fixed;
+        color: var(--charcoal);
+        min-height: 100vh;
+      }
+      
+      /* Custom animations */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      @keyframes float {
+        0%, 100% {
+          transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-10px) rotate(1deg);
+        }
+      }
+      
+      @keyframes slideInRight {
+        from {
+          opacity: 0;
+          transform: translateX(50px) scale(0.8) rotate(5deg);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0) scale(1) rotate(0deg);
+        }
+      }
+      
+      @keyframes slideInLeft {
+        from {
+          opacity: 0;
+          transform: translateX(-50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      
+      @keyframes scaleIn {
+        from {
+          opacity: 0;
+          transform: scale(0.3) rotate(-10deg);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1) rotate(0deg);
+        }
+      }
+      
+      @keyframes glow {
+        0%, 100% {
+          box-shadow: 0 0 20px rgba(180, 134, 11, 0.3);
+        }
+        50% {
+          box-shadow: 0 0 40px rgba(180, 134, 11, 0.6), 0 0 60px rgba(255, 215, 0, 0.4);
+        }
+      }
+      
+      .animate-fade-in-up {
+        animation: fadeInUp 1s ease-out 0.3s both;
+      }
+      
+      .animate-float {
+        animation: float 6s ease-in-out infinite;
+      }
+      
+      .animate-slide-in-right {
+        animation: slideInRight 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s both;
+      }
+      
+      .animate-slide-in-left {
+        animation: slideInLeft 1s ease-out 0.2s both;
+      }
+      
+      .animate-scale-in {
+        animation: scaleIn 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s both;
+      }
+      
+      .animate-glow {
+        animation: glow 3s ease-in-out infinite alternate;
+      }
+      
+      /* Mobile background optimization */
+      @media (max-width: 768px) {
+        .mobile-hero-bg {
+          background-attachment: scroll !important;
+          background-size: cover !important;
+          background-position: center !important;
+          min-height: 100vh !important;
+          height: 100vh !important;
+          background-image: url("/hero-background-mobile.jpg") !important;
+        }
+        
+        /* Ensure proper background coverage on mobile */
+        .mobile-bg-fix {
+          background-size: cover;
+          background-position: center center;
+          background-repeat: no-repeat;
+          width: 100vw;
+          height: 100vh;
+          background-image: url("/hero-background-mobile.jpg");
+        }
+      }
+      
+      /* iOS Safari specific fixes */
+      @supports (-webkit-touch-callout: none) {
+        .mobile-hero-bg {
+          background-attachment: scroll;
+          height: -webkit-fill-available;
+          min-height: -webkit-fill-available;
+        }
+      }
+      
+      /* Full screen gradient fixes */
+      .gradient-full-width {
+        width: 100vw !important;
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%) !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
