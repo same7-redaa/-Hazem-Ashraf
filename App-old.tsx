@@ -1,18 +1,11 @@
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { Routes, Route } from 'react-router-dom';
 import { Section, ProjectCard, Footer, ServiceCard, ToolBadge, StatsCard } from './components/common';
 import {
-  UI_UX_SERVICES, UI_UX_TOOLS,
-  CREATIVE_MEDIA_SERVICES, CREATIVE_MEDIA_TOOLS,
+  UI_UX_PROJECTS, UI_UX_SERVICES, UI_UX_TOOLS,
+  CREATIVE_MEDIA_PROJECTS, CREATIVE_MEDIA_SERVICES, CREATIVE_MEDIA_TOOLS,
   STATS, EXPERTISE_AREAS
 } from './constants';
-import { getProjects, getCampaigns } from './services/firebaseService';
-import { Project, Campaign } from './types';
-
-// Import Admin Components
-import AdminLogin from './pages/AdminLogin';
-import AdminDashboard from './pages/AdminDashboard';
 
 type Page = 'uiux' | 'creative';
 
@@ -29,47 +22,10 @@ const preloadImages = () => {
 
 // --- UI/UX DESIGN PAGE ---
 const UiUxPage: React.FC<{ onSwitch: () => void }> = React.memo(({ onSwitch }) => {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
-  
   // Memoize expensive data to prevent re-renders
+  const memoizedProjects = useMemo(() => UI_UX_PROJECTS, []);
   const memoizedServices = useMemo(() => UI_UX_SERVICES, []);
   const memoizedTools = useMemo(() => UI_UX_TOOLS, []);
-  
-  // Load projects from Firebase
-  useEffect(() => {
-    const loadProjects = async () => {
-      try {
-        console.log('Loading projects from Firebase...');
-        
-        // Try to get current user first
-        import('./services/authService').then(async ({ getCurrentUser }) => {
-          try {
-            const user = await getCurrentUser();
-            console.log('Current user:', user);
-          } catch (error) {
-            console.log('No user logged in, proceeding without auth');
-          }
-        });
-        
-        const firebaseProjects = await getProjects();
-        console.log('Loaded projects:', firebaseProjects);
-        
-        // If no projects found, show a message
-        if (firebaseProjects.length === 0) {
-          console.log('No projects found in Firebase. Go to admin panel to add some.');
-        }
-        
-        setProjects(firebaseProjects);
-      } catch (error) {
-        console.error('Error loading projects:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    loadProjects();
-  }, []);
   
   const handleSwitchClick = useCallback(() => {
     onSwitch();
@@ -197,8 +153,7 @@ const UiUxPage: React.FC<{ onSwitch: () => void }> = React.memo(({ onSwitch }) =
           {EXPERTISE_AREAS.map(area => (
             <ServiceCard 
               key={area.name} 
-              name={area.name}
-              icon={area.icon}
+              service={area} 
               className="bg-stone-900/80 text-yellow-300 hover:bg-yellow-500/20 border border-yellow-500/30 backdrop-blur-sm"
             />
           ))}
@@ -207,20 +162,9 @@ const UiUxPage: React.FC<{ onSwitch: () => void }> = React.memo(({ onSwitch }) =
 
       {/* Projects */}
       <Section title="Featured Projects" className="bg-stone-900/60 backdrop-blur-sm rounded-3xl">
-        {loading ? (
-          <div className="flex justify-center py-8">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500"></div>
-          </div>
-        ) : projects.length === 0 ? (
-          <div className="text-center py-8">
-            <p className="text-stone-400 mb-2">لا توجد مشاريع حالياً.</p>
-            <p className="text-stone-500 text-sm">يمكنك إضافة مشاريع من لوحة التحكم أو تحديث إعدادات Firebase.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map(p => <ProjectCard key={p.id || p.title} project={p} className="bg-stone-900/80 text-stone-100 border border-yellow-500/30 backdrop-blur-sm rounded-2xl"/>)}
-          </div>
-        )}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {memoizedProjects.map(p => <ProjectCard key={p.title} project={p} className="bg-stone-900/80 text-stone-100 border border-yellow-500/30 backdrop-blur-sm rounded-2xl"/>)}
+        </div>
       </Section>
 
       {/* Services */}
@@ -229,8 +173,7 @@ const UiUxPage: React.FC<{ onSwitch: () => void }> = React.memo(({ onSwitch }) =
           {memoizedServices.map(s => (
             <ServiceCard 
               key={s.name} 
-              name={s.name}
-              icon={s.icon}
+              service={s} 
               className="bg-stone-900/80 text-yellow-300 hover:bg-yellow-500/20 border border-yellow-500/30 backdrop-blur-sm"
             />
           ))}
@@ -243,8 +186,7 @@ const UiUxPage: React.FC<{ onSwitch: () => void }> = React.memo(({ onSwitch }) =
           {memoizedTools.map(t => (
             <ToolBadge 
               key={t.name} 
-              name={t.name}
-              icon={t.icon}
+              tool={t} 
               className="text-stone-200 bg-stone-900/80 hover:bg-yellow-500/20 hover:text-yellow-300 border border-yellow-500/30 backdrop-blur-sm"
             />
           ))}
@@ -256,30 +198,10 @@ const UiUxPage: React.FC<{ onSwitch: () => void }> = React.memo(({ onSwitch }) =
 
 // --- CREATIVE MEDIA PAGE ---
 const CreativeMediaPage: React.FC<{ onSwitch: () => void }> = React.memo(({ onSwitch }) => {
-  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
-  const [loading, setLoading] = useState(true);
-  
   // Memoize expensive data to prevent re-renders
+  const memoizedProjects = useMemo(() => CREATIVE_MEDIA_PROJECTS, []);
   const memoizedServices = useMemo(() => CREATIVE_MEDIA_SERVICES, []);
   const memoizedTools = useMemo(() => CREATIVE_MEDIA_TOOLS, []);
-  
-  // Load campaigns from Firebase
-  useEffect(() => {
-    const loadCampaigns = async () => {
-      try {
-        console.log('Loading campaigns from Firebase...');
-        const firebaseCampaigns = await getCampaigns();
-        console.log('Loaded campaigns:', firebaseCampaigns);
-        setCampaigns(firebaseCampaigns);
-      } catch (error) {
-        console.error('Error loading campaigns:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    loadCampaigns();
-  }, []);
   
   const handleSwitchClick = useCallback(() => {
     onSwitch();
@@ -402,15 +324,9 @@ const CreativeMediaPage: React.FC<{ onSwitch: () => void }> = React.memo(({ onSw
 
       {/* Campaigns */}
       <Section title="Featured Campaigns" titleClassName="text-white" className="bg-stone-900/60 backdrop-blur-sm rounded-3xl">
-        {loading ? (
-          <div className="flex justify-center py-8">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500"></div>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {campaigns.map(c => <ProjectCard key={c.id || c.title} project={c} className="bg-stone-900/80 text-white backdrop-blur-sm border border-yellow-500/30 rounded-2xl" />)}
-          </div>
-        )}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {memoizedProjects.map(p => <ProjectCard key={p.title} project={p} className="bg-stone-900/80 text-white backdrop-blur-sm border border-yellow-500/30 rounded-2xl" />)}
+        </div>
       </Section>
 
       {/* Services */}
@@ -419,8 +335,7 @@ const CreativeMediaPage: React.FC<{ onSwitch: () => void }> = React.memo(({ onSw
           {memoizedServices.map(s => (
             <ServiceCard 
               key={s.name} 
-              name={s.name}
-              icon={s.icon}
+              service={s} 
               className="bg-stone-900/80 text-yellow-300 hover:bg-yellow-500/20 border border-yellow-500/30 backdrop-blur-sm"
             />
           ))}
@@ -433,8 +348,7 @@ const CreativeMediaPage: React.FC<{ onSwitch: () => void }> = React.memo(({ onSw
           {memoizedTools.map(t => (
             <ToolBadge 
               key={t.name} 
-              name={t.name}
-              icon={t.icon}
+              tool={t} 
               className="text-white bg-stone-900/80 backdrop-blur-md hover:bg-yellow-500/30 border border-yellow-500/30"
             />
           ))}
@@ -445,8 +359,8 @@ const CreativeMediaPage: React.FC<{ onSwitch: () => void }> = React.memo(({ onSw
 });
 
 
-// --- MAIN PORTFOLIO COMPONENT ---
-const PortfolioPage: React.FC = () => {
+// --- APP CONTAINER ---
+const App: React.FC = () => {
   const [page, setPage] = useState<Page>('uiux');
   const [isFading, setIsFading] = useState(false);
 
@@ -469,6 +383,8 @@ const PortfolioPage: React.FC = () => {
       }, 50);
     }, 400);
   };
+  
+  const isCreativePage = page === 'creative';
 
   return (
     <div className={`antialiased transition-opacity duration-300 ${isFading ? 'opacity-0' : 'opacity-100'}`}>
@@ -478,17 +394,6 @@ const PortfolioPage: React.FC = () => {
         }
         <Footer className="bg-black/40 text-stone-200 border-t border-yellow-500/20 backdrop-blur-sm"/>
     </div>
-  );
-};
-
-// --- APP CONTAINER ---
-const App: React.FC = () => {
-  return (
-    <Routes>
-      <Route path="/" element={<PortfolioPage />} />
-      <Route path="/admin/login" element={<AdminLogin />} />
-      <Route path="/admin/dashboard" element={<AdminDashboard />} />
-    </Routes>
   );
 };
 

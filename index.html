@@ -26,6 +26,7 @@
         --taupe: #B8860B;
         --cool-gray: #6B7280;
         --gold: #FFD700;
+        --vh: 1vh;
       }
       
       /* Performance optimizations */
@@ -37,6 +38,9 @@
         scroll-behavior: smooth;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        /* Fix mobile scroll lag */
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: none;
       }
       
       body {
@@ -47,6 +51,11 @@
         overflow-x: hidden;
         -webkit-text-size-adjust: 100%;
         -webkit-tap-highlight-color: transparent;
+        /* Mobile scroll optimization */
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
       }
       
       /* GPU acceleration for animations */
@@ -188,25 +197,159 @@
         }
       }
       
-      /* Mobile background optimization */
+      /* Mobile background optimization - Enhanced for smooth scrolling */
       @media (max-width: 768px) {
-        .mobile-hero-bg {
-          background-attachment: scroll !important;
-          background-size: cover !important;
-          background-position: center !important;
-          min-height: 100vh !important;
-          height: 100vh !important;
-          background-image: url("/hero-background-mobile.jpg") !important;
+        * {
+          transform: translateZ(0);
+          -webkit-transform: translateZ(0);
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
         }
         
-        /* Ensure proper background coverage on mobile */
+        body {
+          -webkit-overflow-scrolling: touch;
+          overscroll-behavior-y: contain;
+          overscroll-behavior-x: none;
+          height: auto !important;
+          min-height: 100vh;
+          background: var(--maroon) !important;
+        }
+        
+        /* Fix white flashing at bottom */
+        body::after {
+          content: '';
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 200px;
+          background: var(--maroon);
+          z-index: -1;
+          pointer-events: none;
+        }
+        
+        .mobile-hero-bg {
+          background: var(--maroon) !important;
+          filter: none !important;
+          will-change: auto;
+        }
+        
+        /* Remove custom mobile background */
         .mobile-bg-fix {
-          background-size: cover;
-          background-position: center center;
+          background: var(--maroon) !important;
+          filter: none !important;
+          backdrop-filter: none !important;
+          will-change: auto;
+        }
+        
+        /* Enhanced mobile hero layout */
+        .mobile-hero-layout {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          min-height: calc(var(--vh, 1vh) * 100);
+          height: calc(var(--vh, 1vh) * 100);
+          padding: 1.5rem 1rem 0;
+          position: relative;
+          z-index: 10;
+          background: var(--maroon);
+          will-change: auto;
+          transform: translateZ(0);
+          -webkit-transform: translateZ(0);
+        }
+        
+        /* Prevent white flash by ensuring all sections have background */
+        section, div[class*="Section"] {
+          background-color: var(--maroon) !important;
+          transform: translateZ(0);
+          -webkit-transform: translateZ(0);
+        }
+        
+        /* Enhanced village image card */
+        .mobile-bottom-image {
+          width: calc(100% - 2rem);
+          height: auto;
+          min-height: 320px;
+          margin: 1.5rem 1rem 2rem 1rem;
+          background-image: url("/village-bottom.png");
+          background-size: contain;
+          background-position: center;
           background-repeat: no-repeat;
-          width: 100vw;
-          height: 100vh;
-          background-image: url("/hero-background-mobile.jpg");
+          border-radius: 20px;
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          background-color: rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+          position: relative;
+          z-index: 10;
+          overflow: hidden;
+          will-change: auto;
+          transform: translateZ(0);
+          -webkit-transform: translateZ(0);
+        }
+        
+        /* Glass effect overlay */
+        .mobile-bottom-image::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+          border-radius: 20px;
+          pointer-events: none;
+        }
+        
+        /* Ensure next sections have no blur inheritance */
+        .mobile-hero-layout ~ * {
+          filter: none !important;
+          backdrop-filter: none !important;
+        }
+        
+        /* Smaller hero content on mobile */
+        .mobile-hero-content {
+          max-width: 100%;
+          text-align: center;
+        }
+        
+        .mobile-hero-content h1 {
+          font-size: 1.875rem !important; /* text-3xl */
+          line-height: 2.25rem !important;
+          margin-bottom: 0.75rem !important;
+        }
+        
+        .mobile-hero-content p.subtitle {
+          font-size: 1.125rem !important; /* text-lg */
+          line-height: 1.75rem !important;
+          margin-bottom: 0.75rem !important;
+        }
+        
+        .mobile-hero-content p.description {
+          font-size: 0.875rem !important; /* text-sm */
+          line-height: 1.5rem !important;
+          margin-bottom: 1rem !important;
+        }
+        
+        .mobile-hero-content .stats-buttons {
+          gap: 0.25rem !important;
+          margin-bottom: 1rem !important;
+          display: grid !important;
+          grid-template-columns: repeat(3, 1fr) !important;
+          width: 100% !important;
+        }
+        
+        .mobile-hero-content .stats-buttons > div {
+          padding: 0.375rem 0.5rem !important; /* px-2 py-1.5 */
+          font-size: 0.65rem !important; /* smaller text */
+          text-align: center !important;
+          white-space: nowrap !important;
+        }
+        
+        .mobile-hero-content button {
+          padding: 0.625rem 1.5rem !important; /* py-2.5 px-6 */
+          font-size: 0.875rem !important; /* text-sm */
         }
       }
       
@@ -243,5 +386,156 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
+    
+    <script>
+      // Mobile scroll performance optimization
+      function optimizeMobilePerformance() {
+        if (/Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+          // Prevent overscroll bounce on iOS
+          document.addEventListener('touchmove', function(e) {
+            if (e.target.closest('body')) {
+              const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+              const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+              const clientHeight = document.documentElement.clientHeight || window.innerHeight;
+              
+              // Prevent rubber band scrolling
+              if (scrollTop === 0 && e.touches[0].clientY > e.touches[0].clientY) {
+                e.preventDefault();
+              }
+              if (scrollTop + clientHeight >= scrollHeight && e.touches[0].clientY < e.touches[0].clientY) {
+                e.preventDefault();
+              }
+            }
+          }, { passive: false });
+          
+          // Fix viewport height on mobile
+          function setVH() {
+            const vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', vh + 'px');
+          }
+          
+          setVH();
+          window.addEventListener('resize', setVH);
+          window.addEventListener('orientationchange', setVH);
+          
+          // Optimize scroll performance
+          let ticking = false;
+          function updateScroll() {
+            ticking = false;
+          }
+          
+          window.addEventListener('scroll', function() {
+            if (!ticking) {
+              requestAnimationFrame(updateScroll);
+              ticking = true;
+            }
+          }, { passive: true });
+        }
+      }
+      
+      // Simple counter animation for specific stats only
+      function animateNumber(element, targetValue, suffix = '') {
+        let current = 0;
+        const increment = targetValue / 50; // 50 steps
+        const timer = setInterval(() => {
+          current += increment;
+          if (current >= targetValue) {
+            current = targetValue;
+            clearInterval(timer);
+          }
+          
+          let displayValue = Math.floor(current);
+          if (suffix === 'M+') {
+            displayValue = (current / 1000000).toFixed(1) + 'M+';
+          } else if (suffix === 'K') {
+            displayValue = Math.floor(current / 1000) + 'K';
+          } else if (suffix === 'K+') {
+            displayValue = Math.floor(current / 1000) + 'K+';
+          } else {
+            displayValue = Math.floor(current) + suffix;
+          }
+          
+          element.textContent = displayValue;
+        }, 50);
+      }
+      
+      // Check if element contains target numbers
+      function shouldAnimate(text) {
+        return text === '40+' || text === '40%' || text === '500K+' || 
+               text === '10+' || text === '6M+' || text === '70K' || 
+               text === '70+';
+      }
+      
+      // Get animation values for text
+      function getAnimationValues(text) {
+        let targetValue = 0;
+        let suffix = '';
+        
+        if (text === '40+') { targetValue = 40; suffix = '+'; }
+        else if (text === '40%') { targetValue = 40; suffix = '%'; }
+        else if (text === '500K+') { targetValue = 500000; suffix = 'K+'; }
+        else if (text === '10+') { targetValue = 10; suffix = '+'; }
+        else if (text === '6M+') { targetValue = 6000000; suffix = 'M+'; }
+        else if (text === '70K') { targetValue = 70000; suffix = 'K'; }
+        else if (text === '70+') { targetValue = 70; suffix = '+'; }
+        
+        return { targetValue, suffix };
+      }
+      
+      // Initialize counters with scroll detection
+      function initScrollCounters() {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const element = entry.target;
+              const text = element.textContent?.trim();
+              
+              if (shouldAnimate(text) && !element.dataset.animated) {
+                element.dataset.animated = 'true';
+                
+                const { targetValue, suffix } = getAnimationValues(text);
+                
+                if (targetValue > 0) {
+                  element.textContent = '0';
+                  setTimeout(() => {
+                    animateNumber(element, targetValue, suffix);
+                  }, Math.random() * 300);
+                }
+                
+                observer.unobserve(element);
+              }
+            }
+          });
+        }, { threshold: 0.5 });
+        
+        // Find and observe all potential stat elements
+        function findAndObserveStats() {
+          const allElements = document.querySelectorAll('*');
+          allElements.forEach(el => {
+            const text = el.textContent?.trim();
+            if (shouldAnimate(text)) {
+              observer.observe(el);
+            }
+          });
+        }
+        
+        // Initial search
+        setTimeout(findAndObserveStats, 1000);
+        
+        // Re-search periodically in case React renders new content
+        setInterval(findAndObserveStats, 3000);
+      }
+      
+      // Run when DOM is ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+          optimizeMobilePerformance();
+          initScrollCounters();
+        });
+      } else {
+        optimizeMobilePerformance();
+        initScrollCounters();
+      }
+    </script>
   </body>
 </html>
