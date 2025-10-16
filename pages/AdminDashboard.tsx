@@ -169,7 +169,26 @@ const AdminDashboard: React.FC = () => {
                 value={formData.imageUrl}
                 onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
                 className="w-full p-2 border border-gray-300 rounded-md"
+                placeholder="https://example.com/image.jpg"
               />
+              {formData.imageUrl && (
+                <div className="mt-2">
+                  <p className="text-xs text-gray-600 mb-1">معاينة الصورة:</p>
+                  <img 
+                    src={formData.imageUrl} 
+                    alt="معاينة" 
+                    className="w-32 h-20 object-cover rounded border"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      const errorDiv = document.createElement('div');
+                      errorDiv.className = 'w-32 h-20 bg-red-100 border border-red-300 rounded flex items-center justify-center text-red-500 text-xs';
+                      errorDiv.textContent = 'رابط غير صحيح';
+                      target.parentNode?.insertBefore(errorDiv, target.nextSibling);
+                    }}
+                  />
+                </div>
+              )}
             </div>
             
             <div>
@@ -357,11 +376,28 @@ const AdminDashboard: React.FC = () => {
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {currentItems.map((item) => (
             <div key={item.id} className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-              <img 
-                src={item.imageUrl} 
-                alt={item.title}
-                className="w-full h-48 object-cover"
-              />
+              {item.imageUrl ? (
+                <img 
+                  src={item.imageUrl} 
+                  alt={item.title}
+                  className="w-full h-48 object-cover"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                    const placeholder = document.createElement('div');
+                    placeholder.className = 'w-full h-48 bg-gray-100 flex items-center justify-center border-b';
+                    placeholder.innerHTML = '<div class="text-center text-gray-500"><div class="text-2xl mb-2">📷</div><p class="text-sm">صورة غير متوفرة</p></div>';
+                    target.parentNode?.insertBefore(placeholder, target.nextSibling);
+                  }}
+                />
+              ) : (
+                <div className="w-full h-48 bg-gray-100 flex items-center justify-center border-b">
+                  <div className="text-center text-gray-500">
+                    <div className="text-2xl mb-2">📷</div>
+                    <p className="text-sm">لا توجد صورة</p>
+                  </div>
+                </div>
+              )}
               <div className="p-4">
                 <div className="flex items-start justify-between mb-2">
                   <h3 className="font-semibold text-gray-900 truncate">{item.title}</h3>

@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Link } from 'react-router-dom';
 import { Section, ProjectCard, Footer, ServiceCard, ToolBadge, StatsCard } from './components/common';
 import {
   UI_UX_SERVICES, UI_UX_TOOLS,
@@ -14,8 +14,6 @@ import { Project, Campaign } from './types';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 
-type Page = 'uiux' | 'creative';
-
 // Performance: Preload critical images
 const preloadImages = () => {
   if (typeof window !== 'undefined') {
@@ -28,7 +26,7 @@ const preloadImages = () => {
 };
 
 // --- UI/UX DESIGN PAGE ---
-const UiUxPage: React.FC<{ onSwitch: () => void }> = React.memo(({ onSwitch }) => {
+const UiUxPage: React.FC = React.memo(() => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   
@@ -70,10 +68,6 @@ const UiUxPage: React.FC<{ onSwitch: () => void }> = React.memo(({ onSwitch }) =
     
     loadProjects();
   }, []);
-  
-  const handleSwitchClick = useCallback(() => {
-    onSwitch();
-  }, [onSwitch]);
 
   return (
     <div className="text-stone-100">
@@ -110,19 +104,22 @@ const UiUxPage: React.FC<{ onSwitch: () => void }> = React.memo(({ onSwitch }) =
                 10+ Mobile Apps
               </div>
             </div>
-            <button
-              onClick={handleSwitchClick}
-              className="bg-yellow-200 text-slate-800 font-bold py-3 px-8 rounded-full text-lg hover:bg-yellow-300 hover:text-slate-900 transition-all duration-300 transform hover:scale-105 hover:shadow-xl"
+            <Link
+              to="/creative-media"
+              className="bg-yellow-200 text-slate-800 font-bold py-3 px-8 rounded-full text-lg hover:bg-yellow-300 hover:text-slate-900 transition-all duration-300 transform hover:scale-105 hover:shadow-xl inline-block"
             >
               Explore Creative Side →
-            </button>
+            </Link>
           </div>
         </div>
         
         {/* Mobile Content Layout */}
         <div className="relative z-10 w-full md:hidden mobile-hero-layout">
-          {/* Content at Top - Made Smaller */}
-          <div className="text-center animate-slide-in-left mobile-hero-content pt-4">
+          {/* Village Image at Top */}
+          <div className="mobile-bottom-image"></div>
+          
+          {/* Content Below Image */}
+          <div className="text-center animate-slide-in-left mobile-hero-content pt-4 pb-8">
             <h1 className="font-black text-white drop-shadow-2xl">Hazem Ashraf Sayed</h1>
             <p className="subtitle font-semibold text-yellow-200 drop-shadow-lg">UI/UX Designer & Product Developer</p>
             <p className="description leading-relaxed text-white drop-shadow-md px-2">
@@ -139,16 +136,13 @@ const UiUxPage: React.FC<{ onSwitch: () => void }> = React.memo(({ onSwitch }) =
                 10+ Mobile Apps
               </div>
             </div>
-            <button
-              onClick={handleSwitchClick}
-              className="bg-yellow-200 text-slate-800 font-bold rounded-full hover:bg-yellow-300 hover:text-slate-900 transition-all duration-300 transform hover:scale-105 hover:shadow-xl"
+            <Link
+              to="/creative-media"
+              className="bg-yellow-200 text-slate-800 font-bold py-3 px-6 rounded-full text-base hover:bg-yellow-300 hover:text-slate-900 transition-all duration-300 transform hover:scale-105 hover:shadow-xl inline-block mb-4"
             >
               Explore Creative Side →
-            </button>
+            </Link>
           </div>
-          
-          {/* Village Image at Bottom */}
-          <div className="mobile-bottom-image"></div>
         </div>
       </div>
 
@@ -250,12 +244,13 @@ const UiUxPage: React.FC<{ onSwitch: () => void }> = React.memo(({ onSwitch }) =
           ))}
         </div>
       </Section>
+      <Footer className="bg-black/40 text-stone-200 border-t border-yellow-500/20 backdrop-blur-sm"/>
     </div>
   );
 });
 
 // --- CREATIVE MEDIA PAGE ---
-const CreativeMediaPage: React.FC<{ onSwitch: () => void }> = React.memo(({ onSwitch }) => {
+const CreativeMediaPage: React.FC = React.memo(() => {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [loading, setLoading] = useState(true);
   
@@ -280,10 +275,6 @@ const CreativeMediaPage: React.FC<{ onSwitch: () => void }> = React.memo(({ onSw
     
     loadCampaigns();
   }, []);
-  
-  const handleSwitchClick = useCallback(() => {
-    onSwitch();
-  }, [onSwitch]);
 
   return (
     <div className="text-stone-100">
@@ -320,19 +311,22 @@ const CreativeMediaPage: React.FC<{ onSwitch: () => void }> = React.memo(({ onSw
                 500K+ Paid Campaigns
               </div>
             </div>
-            <button
-              onClick={handleSwitchClick}
-              className="bg-yellow-200 text-slate-800 font-bold py-3 px-8 rounded-full text-lg hover:bg-yellow-300 hover:text-slate-900 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl"
+            <Link
+              to="/"
+              className="bg-yellow-200 text-slate-800 font-bold py-3 px-8 rounded-full text-lg hover:bg-yellow-300 hover:text-slate-900 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl inline-block"
             >
               ← Explore Design Side
-            </button>
+            </Link>
           </div>
         </div>
         
         {/* Mobile Content Layout */}
         <div className="relative z-10 w-full md:hidden mobile-hero-layout">
-          {/* Content at Top - Made Smaller */}
-          <div className="text-center animate-slide-in-left mobile-hero-content pt-4">
+          {/* Village Image at Top */}
+          <div className="mobile-bottom-image"></div>
+          
+          {/* Content Below Image */}
+          <div className="text-center animate-slide-in-left mobile-hero-content pt-4 pb-8">
             <h1 className="font-black text-white drop-shadow-2xl">Hazem Ashraf Sayed</h1>
             <p className="subtitle font-semibold text-yellow-200 drop-shadow-lg">Creative Media & Digital Marketing Specialist</p>
             <p className="description leading-relaxed text-white drop-shadow-md px-2">
@@ -349,16 +343,13 @@ const CreativeMediaPage: React.FC<{ onSwitch: () => void }> = React.memo(({ onSw
                 500K+ Paid Campaigns
               </div>
             </div>
-            <button
-              onClick={handleSwitchClick}
-              className="bg-yellow-200 text-slate-800 font-bold rounded-full hover:bg-yellow-300 hover:text-slate-900 transition-all duration-300 transform hover:scale-105 hover:shadow-xl"
+            <Link
+              to="/"
+              className="bg-yellow-200 text-slate-800 font-bold py-3 px-6 rounded-full text-base hover:bg-yellow-300 hover:text-slate-900 transition-all duration-300 transform hover:scale-105 hover:shadow-xl inline-block mb-4"
             >
               ← Explore Design Side
-            </button>
+            </Link>
           </div>
-          
-          {/* Village Image at Bottom */}
-          <div className="mobile-bottom-image"></div>
         </div>
       </div>
 
@@ -440,52 +431,22 @@ const CreativeMediaPage: React.FC<{ onSwitch: () => void }> = React.memo(({ onSw
           ))}
         </div>
       </Section>
+      <Footer className="bg-black/40 text-stone-200 border-t border-yellow-500/20 backdrop-blur-sm"/>
     </div>
   );
 });
 
-
-// --- MAIN PORTFOLIO COMPONENT ---
-const PortfolioPage: React.FC = () => {
-  const [page, setPage] = useState<Page>('uiux');
-  const [isFading, setIsFading] = useState(false);
-
-  // Preload images on component mount
+// --- APP CONTAINER ---
+const App: React.FC = () => {
+  // Preload images on app mount
   useEffect(() => {
     preloadImages();
   }, []);
 
-  const handleSwitchPage = (newPage: Page) => {
-    if (page === newPage) return;
-    
-    setIsFading(true);
-    // Wait for fade-out to complete before switching content
-    setTimeout(() => {
-      setPage(newPage);
-      window.scrollTo(0, 0);
-      // Wait a moment for new content to render, then fade in
-      setTimeout(() => {
-         setIsFading(false);
-      }, 50);
-    }, 400);
-  };
-
-  return (
-    <div className={`antialiased transition-opacity duration-300 ${isFading ? 'opacity-0' : 'opacity-100'}`}>
-        {page === 'uiux' 
-            ? <UiUxPage onSwitch={() => handleSwitchPage('creative')} /> 
-            : <CreativeMediaPage onSwitch={() => handleSwitchPage('uiux')} />
-        }
-        <Footer className="bg-black/40 text-stone-200 border-t border-yellow-500/20 backdrop-blur-sm"/>
-    </div>
-  );
-};
-
-// --- APP CONTAINER ---
-const App: React.FC = () => {
   return (
     <Routes>
-      <Route path="/" element={<PortfolioPage />} />
+      <Route path="/" element={<UiUxPage />} />
+      <Route path="/creative-media" element={<CreativeMediaPage />} />
       <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="/admin/dashboard" element={<AdminDashboard />} />
     </Routes>

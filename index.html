@@ -246,10 +246,9 @@
         .mobile-hero-layout {
           display: flex;
           flex-direction: column;
-          justify-content: space-between;
+          justify-content: flex-start;
           min-height: calc(var(--vh, 1vh) * 100);
-          height: calc(var(--vh, 1vh) * 100);
-          padding: 1.5rem 1rem 0;
+          padding: 1.5rem 1rem 3rem;
           position: relative;
           z-index: 10;
           background: var(--maroon);
@@ -270,7 +269,7 @@
           width: calc(100% - 2rem);
           height: auto;
           min-height: 320px;
-          margin: 1.5rem 1rem 2rem 1rem;
+          margin: 1rem 1rem 1.5rem 1rem;
           background-image: url("/village-bottom.png");
           background-size: contain;
           background-position: center;
@@ -347,9 +346,12 @@
           white-space: nowrap !important;
         }
         
-        .mobile-hero-content button {
-          padding: 0.625rem 1.5rem !important; /* py-2.5 px-6 */
+        .mobile-hero-content button,
+        .mobile-hero-content a[class*="rounded-full"] {
+          padding: 0.75rem 1.5rem !important; /* py-3 px-6 */
           font-size: 0.875rem !important; /* text-sm */
+          margin-top: 0.5rem !important;
+          display: inline-block !important;
         }
       }
       

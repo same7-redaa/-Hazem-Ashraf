@@ -114,7 +114,24 @@ interface ProjectCardProps {
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({ project, className = '' }) => (
   <div className={`rounded-xl overflow-hidden shadow-lg transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 ${className}`}>
-    <img className="w-full h-48 object-cover" src={project.imageUrl} alt={project.title} />
+    {project.imageUrl ? (
+      <img 
+        className="w-full h-48 object-cover" 
+        src={project.imageUrl} 
+        alt={project.title}
+        onError={(e) => {
+          const target = e.target as HTMLImageElement;
+          target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI0MCIgdmlld0JveD0iMCAwIDQwMCAyNDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjQwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0xNzUgMTAwSDE3MEMxNjcuMjUgMTAwIDE2NSAxMDIuMjUgMTY1IDEwNVYxMTBDMTY1IDExMi43NSAxNjcuMjUgMTE1IDE3MCAxMTVIMTc1QzE3Ny43NSAxMTUgMTgwIDExMi43NSAxODAgMTEwVjEwNUMxODAgMTAyLjI1IDE3Ny43NSAxMDAgMTc1IDEwMFoiIGZpbGw9IiM5Q0E0QUYiLz4KPHA+CjxyZWN0IHg9IjEwMCIgeT0iMTMwIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjQiIGZpbGw9IiM5Q0E0QUYiLz4KPHJlY3QgeD0iMTIwIiB5PSIxNDAiIHdpZHRoPSIxNjAiIGhlaWdodD0iNCIgZmlsbD0iIzlDQTRBRiIvPgo8L3N2Zz4K';
+        }}
+      />
+    ) : (
+      <div className="w-full h-48 bg-gray-200 flex items-center justify-center">
+        <div className="text-center text-gray-500">
+          <Image className="w-12 h-12 mx-auto mb-2 opacity-50" />
+          <p className="text-sm">لا توجد صورة</p>
+        </div>
+      </div>
+    )}
     <div className="px-6 py-4">
       <div className="font-bold text-xl mb-2">{project.title}</div>
       <p className="text-base mb-3">
